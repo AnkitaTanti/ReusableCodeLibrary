@@ -2,10 +2,10 @@
 
 /*********** FUNCTION TO GET PAGE ID FROM TEMPLATE NAME ***********/
 // IF TEMPLATES ARE CREATED IN page-templates DIRECTORY, PASS 'page-templates/your-template-name' AS PARAMETER AT THE TIME OF CALLING THIS FUNCTION
-function get_page_id_by_template_name($tempname){
+function get_page_id_by_template_name($template_name){
 	$page_array = get_pages(array(
 	    'meta_key' => '_wp_page_template',
-	    'meta_value' => 'page-templates/'.$tempname
+	    'meta_value' => $template_name
 	));
 	if($page_array){
 		$page_id = $page_array[0]->ID;	
