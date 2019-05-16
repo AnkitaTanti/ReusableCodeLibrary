@@ -45,4 +45,29 @@ function textdomain_change_fetured_image_link_text( $content, $post_id ) {
 }
 add_filter( 'admin_post_thumbnail_html', 'textdomain_change_fetured_image_link_text', 10, 2 );
 /******** TO CHANGE GIVEN POST TYPE THUMBNAIL METABOX TITLE & OTHER DETAILS ********/
+
+/********* POST THUMBNAIL UPLOADING FROM THE FRONT END *********/
+function textdomain_thumbnail_uploading_function( $file, $post_id, $set_as_featured ) {
+	if ( !function_exists('wp_handle_upload') ) {
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+	}
+    $upload = wp_upload_bits( $file['name'], null, file_get_contents( $file['tmp_name'] ) );
+    $wp_filetype = wp_check_filetype( basename( $upload['file'] ), null );
+    $wp_upload_dir = wp_upload_dir();    
+    $attachment = array(
+        'guid'           => $wp_upload_dir['baseurl'] . _wp_relative_upload_path( $upload['file'] ),
+        'post_mime_type' => $wp_filetype['type'],
+        'post_title'     => preg_replace('/\.[^.]+$/', '', basename( $upload['file'] )),
+        'post_content'   => '',
+        'post_status'    => 'inherit'
+    );
+    $attachment_id = wp_insert_attachment( $attachment, $upload['file'], $post_id );
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    $attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
+    wp_update_attachment_metadata( $attachment_id, $attach_data );
+    if( $set_as_featured == true ) {
+    	set_post_thumbnail( $post_id, $attachment_id );
+    }
+}
+/********* POST THUMBNAIL UPLOADING FROM THE FRONT END *********/
 ?>
