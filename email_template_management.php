@@ -32,7 +32,7 @@ function ilc_save_theme_settings() {
     global $pagenow;
     $settings = get_option( "email_management_settings_option" );
     $settings['custom_admin_email'] = $_POST['custom_admin_email']; 
-    if(isset($_POST['test']) && $_POST['test'] == 'Test'){
+   /* if(isset($_POST['test']) && $_POST['test'] == 'Test'){
         if ( isset ( $_GET['tab'] ) )
             $tab = $_GET['tab'];
              switch ( $tab ){ 
@@ -43,8 +43,8 @@ function ilc_save_theme_settings() {
                     $emailBody = stripslashes(wp_kses_post($_POST['registration-verification-content']));
                 break;
             }
-            Admin_test_email($settings['custom_admin_email'], $emailBody);
-    }
+           //Admin_test_email($settings['custom_admin_email'], $emailBody);
+    }*/
 
     if ( $pagenow == 'admin.php' && $_GET['page'] == 'email-template-management' ){ 
         if ( isset ( $_GET['tab'] ) )
@@ -110,7 +110,7 @@ function email_settings_page() {
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2"><span class="description">All client deposit request emails and client withdrawal request emails will be sent to the above mentioned admin email address. </span>
+                                <td colspan="2"><span class="description">All emails will be sent to the above mentioned admin email address. </span>
                             </td></tr>
                     </table></br>';
                 if ( $pagenow == 'admin.php' && $_GET['page'] == 'email-template-management' ){ 
