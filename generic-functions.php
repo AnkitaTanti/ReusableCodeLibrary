@@ -70,4 +70,22 @@ function textdomain_thumbnail_uploading_function( $file, $post_id, $set_as_featu
     }
 }
 /********* POST THUMBNAIL UPLOADING FROM THE FRONT END *********/
+
+/********* WPML SHOW COMMENTS FROM ALL LANGUAGES START *********/
+global $sitepress;
+remove_filter( 'comments_clauses', array( $sitepress, 'comments_clauses' ), 10, 2 );
+add_action('pre_get_comments', function($c){
+    $id = [];
+    $languages = apply_filters('wpml_active_languages', '');
+    if( 1 < count($languages) ){
+        foreach( $languages as $l ){
+            $id[] = apply_filters( 'wpml_object_id', $c->query_vars['post_id'], 'page', FALSE, $l['code']);
+        }
+    }
+    $c->query_vars['post_id'] = '';
+    $c->query_vars['post__in'] = $id;
+    return $c;
+});
+/********* WPML SHOW COMMENTS FROM ALL LANGUAGES END *********/
+
 ?>
